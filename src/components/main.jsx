@@ -2,7 +2,7 @@ import style from "./main.module.css"
 import Card from "./ui/Card/card"
 import basePosts from "../data/posts"
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const baseFormData={
     title:"",
@@ -19,6 +19,16 @@ export default function Main(){
     const [postTitle, setPostTitle] = useState("")
 
     const [formData, setFormData] = useState(baseFormData)
+
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+        if(isFirstRender.current){
+            isFirstRender.current=false
+        }else{
+            alert("Toggle Visibilità")
+        }
+    },[formData.published])
 
     function handleFormData(e){
 
