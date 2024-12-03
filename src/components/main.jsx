@@ -20,14 +20,14 @@ export default function Main(){
 
     const [formData, setFormData] = useState(baseFormData)
 
-    const isFirstRender = useRef(true);
+    const isLoaded = useRef(false);
 
     useEffect(() => {
-        if(isFirstRender.current){
-            isFirstRender.current=false
-        }else{
+        if(isLoaded.current){
             alert("Toggle Visibilità")
         }
+        else{
+            isLoaded.current=true;}
     },[formData.published])
 
     function handleFormData(e){
