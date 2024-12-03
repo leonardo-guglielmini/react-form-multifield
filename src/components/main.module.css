@@ -30,8 +30,15 @@
 
     .formDiv{
         width: 100%;
+        margin: 0.3rem 0;
+    }
+    .formCheckbox{
+        margin-right: 0.5rem;
     }
     .formField{
+        border: none;
+        border-radius: 15px;
+        padding: 0.3rem;
         width: 30%;
     }
     .submit{

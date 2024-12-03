@@ -21,15 +21,23 @@ export default function Main(){
     const [formData, setFormData] = useState(baseFormData)
 
     function handleFormData(e){
-        const key = e.target.name
-        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
 
-        const newFormData ={
-            ...formData,
-            [key] : value
-        }
-        
-        setFormData(newFormData)
+        const key = e.target.name
+        const value = e.target.value
+        const type = e.target.type
+        const checked = e.target.checked
+
+        setFormData((formData) =>{
+            const newFormData = {...formData}
+
+            type === "checkbox" && key =="tags" ? 
+            (newFormData.tags = checked ? formData.tags.concat(value) : formData.tags.filter((tag) => tag!==value)) 
+            : type === "checkbox" && key ==="published" ? 
+            (newFormData.published = checked) 
+            : (newFormData[key] = value)
+
+            return newFormData;
+        })
     }
 
     function addNewPost(){
@@ -38,11 +46,11 @@ export default function Main(){
 
         const newPost ={
             id: posts.at(-1).id+1,
-            ...formData,
-            tags:[formData.tags.split(" ")],
+            ...formData
         }
 
         setPosts([...posts, newPost])
+        setFormData(baseFormData)
 
         //console.log(posts)
         console.log("post aggiunto correttamente")
@@ -75,10 +83,15 @@ export default function Main(){
                         <input className={style.formField} id="content" name="content" onChange={handleFormData} type="text" placeholder="Descrizione del post" value={formData.content}/>
                     </div>
                     <div className={style.formDiv}>
-                        <input className={style.formField} id="tags" name="tags" onChange={handleFormData} type="text" placeholder="Tags del post" value={formData.tags}/>
+                        <input className={style.formField} id="image" name="image" onChange={handleFormData} type="text" placeholder="URL immagine" value={formData.image}/>
                     </div>
                     <div className={style.formDiv}>
-                        <input className={style.formField} id="image" name="image" onChange={handleFormData} type="text" placeholder="URL immagine" value={formData.image}/>
+                        <input  id="tag1" name="tags" onChange={handleFormData} type="checkbox" value={"tag1"}/>
+                        <label className={style.formCheckbox} htmlFor="tag1">Tag 1</label>
+                        <input id="tag2" name="tags" onChange={handleFormData} type="checkbox" value={"tag2"}/>
+                        <label className={style.formCheckbox} htmlFor="tag2">Tag 2</label>
+                        <input id="tag3" name="tags" onChange={handleFormData} type="checkbox" value={"tag3"}/>
+                        <label className={style.formCheckbox} htmlFor="tag3">Tag 3</label>
                     </div>
                     <div className={style.formDiv}>
                         <input id="published" name="published" onChange={handleFormData} checked={formData.published} type="checkbox"/>
