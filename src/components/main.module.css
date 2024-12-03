@@ -24,12 +24,21 @@
 .form{
     padding: 1rem 0;
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
 
+    .formDiv{
+        width: 100%;
+    }
+    .formField{
+        width: 30%;
+    }
     .submit{
         border: none;
         background-color: blue;
         color: white;
         padding: 0.5rem;
+        cursor: pointer;
     }
 }

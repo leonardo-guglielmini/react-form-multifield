@@ -4,32 +4,45 @@ import basePosts from "../data/posts"
 
 import { useState } from 'react'
 
+const baseFormData={
+    title:"",
+    image:undefined,
+    content:"",
+    tags:[],
+    published:true
+}
+
 export default function Main(){
 
     let tags=[]
     const [posts, setPosts] = useState(basePosts)
-    const [newPostTitle, setNewPostTitle] = useState("")
-    const [newPostContent, setNewPostContent] = useState("")
-    const [newPostTags, setNewPostTags] = useState("")
     const [postTitle, setPostTitle] = useState("")
+
+    const [formData, setFormData] = useState(baseFormData)
+
+    function handleFormData(e){
+        const key = e.target.name
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
+
+        const newFormData ={
+            ...formData,
+            [key] : value
+        }
+        
+        setFormData(newFormData)
+    }
 
     function addNewPost(){
 
-        if(newPostTitle === "") return
+        if(formData.title === "") return
 
         const newPost ={
             id: posts.at(-1).id+1,
-            title: newPostTitle,
-            image: undefined,
-            content: newPostContent,
-            tags:[...newPostTags.split(" ")],
-            published:true
+            ...formData,
+            tags:[formData.tags.split(" ")],
         }
 
         setPosts([...posts, newPost])
-        setNewPostTitle("")
-        setNewPostContent("")
-        setNewPostTags("")
 
         //console.log(posts)
         console.log("post aggiunto correttamente")
@@ -55,10 +68,23 @@ export default function Main(){
         <main className={style.mainContent}>
             <div className="container">
                 <form className={style.form} onSubmit={(e) => {e.preventDefault(); addNewPost()}} action="">
-                        <input  onChange={(e)=>setNewPostTitle(e.target.value)} type="text" placeholder="Titolo del post" value={newPostTitle}/>
-                        <input  onChange={(e)=>setNewPostContent(e.target.value)} type="text" placeholder="Descrizione del post" value={newPostContent}/>
-                        <input onChange={(e)=>setNewPostTags(e.target.value)} type="text" placeholder="Tags del post" value={newPostTags}/>
-                        <input className={style.submit} type="submit" value="Invia"/>
+                    <div className={style.formDiv}>
+                        <input className={style.formField} id="title" name="title" onChange={handleFormData} type="text" placeholder="Titolo del post" value={formData.title}/>
+                    </div>
+                    <div className={style.formDiv}>
+                        <input className={style.formField} id="content" name="content" onChange={handleFormData} type="text" placeholder="Descrizione del post" value={formData.content}/>
+                    </div>
+                    <div className={style.formDiv}>
+                        <input className={style.formField} id="tags" name="tags" onChange={handleFormData} type="text" placeholder="Tags del post" value={formData.tags}/>
+                    </div>
+                    <div className={style.formDiv}>
+                        <input className={style.formField} id="image" name="image" onChange={handleFormData} type="text" placeholder="URL immagine" value={formData.image}/>
+                    </div>
+                    <div className={style.formDiv}>
+                        <input id="published" name="published" onChange={handleFormData} checked={formData.published} type="checkbox"/>
+                        <label htmlFor="published">Visibile</label>
+                    </div>
+                    <input className={style.submit} type="submit" value="Invia"/>
                 </form>
 
                 <section className={style.row}>
